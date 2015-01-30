@@ -1,7 +1,7 @@
 <?php
 namespace Mongo\Silex\Provider;
 
-class MongoConnectionProvider extends \Pimple
+class MongoConnectionProvider extends \Pimple\Container
 {
     /**
      * @param array $options
@@ -10,9 +10,9 @@ class MongoConnectionProvider extends \Pimple
     {
         $provider = $this;
         foreach($options as $key => $connection) {
-            $this[$key] = $this->share(function() use($connection, $provider) {
+            $this[$key] = function() use($connection, $provider) {
                 return $provider->createConnection($connection['server'], $connection['options']);
-            });
+            };
         }
     }
 
